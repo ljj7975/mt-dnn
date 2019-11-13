@@ -317,17 +317,19 @@ def main():
         model.load(args.model_ckpt)
 
     #### model meta str
-    headline = '############# Model Arch of MT-DNN #############'
+    # headline = '############# Model Arch of MT-DNN #############'
     ### print network
-    logger.info('\n{}\n{}\n'.format(headline, model.network))
+    # logger.info('\n{}\n{}\n'.format(headline, model.network))
 
     # dump config
-    config_file = os.path.join(output_dir, 'config.json')
-    with open(config_file, 'w', encoding='utf-8') as writer:
-        writer.write('{}\n'.format(json.dumps(opt)))
-        writer.write('\n{}\n{}\n'.format(headline, model.network))
+    # config_file = os.path.join(output_dir, 'config.json')
+    # with open(config_file, 'w', encoding='utf-8') as writer:
+    #     writer.write('{}\n'.format(json.dumps(opt)))
+    #     writer.write('\n{}\n{}\n'.format(headline, model.network))
 
     logger.info("Total number of params: {}".format(model.total_param))
+
+    logger.info(f"cuda usage {args.cuda}")
 
     # tensorboard
     if args.tensorboard:
