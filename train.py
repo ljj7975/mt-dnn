@@ -223,6 +223,7 @@ def main():
     logger.info(args.label_size)
     dev_data_list = []
     test_data_list = []
+
     for dataset in args.test_datasets:
         prefix = dataset.split('_')[0]
         task_id = tasks_class[task_defs.n_class_map[prefix]] if args.mtl_opt > 0 else tasks[prefix]
@@ -328,6 +329,8 @@ def main():
         writer.write('\n{}\n{}\n'.format(headline, model.network))
 
     logger.info("Total number of params: {}".format(model.total_param))
+
+    logger.info(f"cuda usage {args.cuda}")
 
     # tensorboard
     if args.tensorboard:
