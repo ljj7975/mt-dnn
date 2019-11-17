@@ -4,8 +4,8 @@ if [[ $# -ne 3 ]]; then
   exit 1
 fi
 prefix="mt-dnn-rte"
-BATCH_SIZE=$1
-gpu=$2
+BATCH_SIZE=$2
+gpu=$3
 echo "export CUDA_VISIBLE_DEVICES=${gpu}"
 export CUDA_VISIBLE_DEVICES=${gpu}
 tstr=$(date +"%FT%H%M")
@@ -14,15 +14,18 @@ train_datasets="mnli,rte,qqp,qnli,mrpc,sst,cola,stsb"
 test_datasets="mnli_matched,mnli_mismatched,rte"
 MODEL_ROOT="checkpoints"
 
-echo $3
-if [[ $3 == "bert_base" ]]
+echo $1
+if [ $1 == "bert_base" ]
 then
     BERT_PATH="~/scratch/mt_dnn_models/bert_model_base_uncased.pt"
-elif [[ $3 == "bert_large" ]]
+elif [ $1 == "bert_large" ]
+then
     BERT_PATH="~/scratch/mt_dnn_models/bert_model_large_uncased.pt"
-elif [[ $3 == "roberta_base" ]]
+elif [ $1 == "roberta_base" ]
+then
     BERT_PATH="~/scratch/mt_dnn_models/roberta.base/model.pt"
-elif [[ $3 == "roberta_large" ]]
+elif [ $1 == "roberta_large" ]
+then
     BERT_PATH="~/scratch/mt_dnn_models/roberta.large/model.pt"
 else
     echo "INCORRECT MODEL NAME"
@@ -37,6 +40,6 @@ grad_clipping=0
 global_grad_clipping=1
 lr="5e-5"
 
-model_dir="checkpoints/${3}_${tstr}"
+model_dir="checkpoints/${1}_${tstr}"
 log_file="${model_dir}/log.log"
 python train.py --data_dir ${DATA_DIR} --init_checkpoint ${BERT_PATH} --batch_size ${BATCH_SIZE} --output_dir ${model_dir} --log_file ${log_file} --answer_opt ${answer_opt} --optimizer ${optim} --train_datasets ${train_datasets} --test_datasets ${test_datasets} --grad_clipping ${grad_clipping} --global_grad_clipping ${global_grad_clipping} --learning_rate ${lr} --multi_gpu_on
