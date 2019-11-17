@@ -25,7 +25,7 @@ class XSoftmax(torch.autograd.Function):
     if version.Version(torch.__version__) >= version.Version('1.2.0a'):
       rmask = (1-mask).bool()
     else:
-      rmask = (1-mask).to(dtype=torch.bool)
+      rmask = (1-mask).bool()
 
     output = input.masked_fill(rmask, float('-inf'))
     output = torch.softmax(output, self.dim)
@@ -48,7 +48,7 @@ class XDropout(torch.autograd.Function):
       if version.Version(torch.__version__) >= version.Version('1.2.0a'):
         mask=(1-torch.empty_like(input).bernoulli_(1-self.dropout)).bool()
       else:
-        mask=(1-torch.empty_like(input).bernoulli_(1-self.dropout)).to(dtype=torch.bool)
+        mask=(1-torch.empty_like(input).bernoulli_(1-self.dropout)).bool()
 
       self.save_for_backward(mask)
       return input.masked_fill(mask, 0)*self.scale

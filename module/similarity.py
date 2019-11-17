@@ -213,7 +213,7 @@ class AttentionWrapper(nn.Module):
         logits.data.masked_fill_(key_mask.data, -float('inf'))
         if self.drop_diagonal:
             assert logits.size(1) == logits.size(2)
-            diag_mask = torch.diag(logits.data.new(logits.size(1)).zero_() + 1).to(dtype=torch.bool).unsqueeze(0).expand_as(logits)
+            diag_mask = torch.diag(logits.data.new(logits.size(1)).zero_() + 1).bool().unsqueeze(0).expand_as(logits)
             logits.data.masked_fill_(diag_mask, -float('inf'))
 
         prob = F.softmax(logits.view(-1, key.size(1)), 1)
@@ -549,7 +549,7 @@ class MultiheadAttentionWrapper(nn.Module):
 
         if self.drop_diagonal:
             assert attn_weights.size(1) == attn_weights.size(2)
-            diag_mask = torch.diag(attn_weights.data.new(attn_weights.size(1)).zero_() + 1).to(dtype=torch.bool).unsqueeze(0).expand_as(attn_weights)
+            diag_mask = torch.diag(attn_weights.data.new(attn_weights.size(1)).zero_() + 1).bool().unsqueeze(0).expand_as(attn_weights)
             attn_weights.data.masked_fill_(diag_mask, -float('inf'))
 
         attn_weights = F.softmax(attn_weights.float(), dim=-1).type_as(attn_weights)
