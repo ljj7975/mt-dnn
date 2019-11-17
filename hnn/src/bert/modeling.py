@@ -213,7 +213,7 @@ class BertSelfAttention(nn.Module):
         attention_scores = torch.matmul(query_layer, key_layer.transpose(-1, -2))
         # Apply the attention mask is (precomputed for all layers in BertModel forward() function)
         attention_scores = attention_scores / math.sqrt(self.attention_head_size)
-        att_mask = attention_mask#.to(dtype=torch.bool)
+        att_mask = attention_mask#.bool()
         attention_probs = XSoftmax.apply(attention_scores, att_mask, -1)
         attention_probs = self.dropout(attention_probs)
 
@@ -460,7 +460,7 @@ class BertModel(PreTrainedBertModel):
         # this attention mask is more simple than the triangular masking of causal attention
         # used in OpenAI GPT, we just need to prepare the broadcast dimension here.
         extended_attention_mask = attention_mask.unsqueeze(1).unsqueeze(2)
-        att_mask = extended_attention_mask.to(dtype=torch.bool)
+        att_mask = extended_attention_mask.bool()
         att_mask = att_mask*att_mask.squeeze(-2).unsqueeze(-1)
         embedding_output = self.embeddings(input_ids.to(torch.long), token_type_ids.to(torch.long), position_ids, attention_mask)
         encoded_layers = self.encoder(embedding_output,
