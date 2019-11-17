@@ -1,5 +1,6 @@
 # coding=utf-8
 # Copyright (c) Microsoft. All rights reserved.
+import torch
 import torch.nn as nn
 from pytorch_pretrained_bert.modeling import BertConfig, BertLayerNorm, BertModel
 
@@ -90,6 +91,15 @@ class SANBertNetwork(nn.Module):
         self.apply(init_weights)
 
     def forward(self, input_ids, token_type_ids, attention_mask, premise_mask=None, hyp_mask=None, task_id=0):
+        if attention_mask is not None and attention_mask.dtype == torch.uint8:
+            attention_mask = attention_mask.bool()
+
+        if premise_mask is not None and premise_mask.dtype == torch.uint8:
+            premise_mask = premise_mask.bool()
+
+        if hyp_mask is not None and hyp_mask.dtype == torch.uint8:
+            hyp_mask = hyp_mask.bool()
+
         if self.encoder_type == EncoderModelType.ROBERTA:
             sequence_output = self.bert.extract_features(input_ids)
             pooled_output = self.pooler(sequence_output)
