@@ -383,7 +383,7 @@ def main():
             if args.save_per_updates_on and ((model.local_updates) % (args.save_per_updates * args.grad_accumulation_step) == 0):
                 model_file = os.path.join(output_dir, 'model_{}_{}.pt'.format(epoch, model.updates))
                 logger.info('Saving mt-dnn model to {}'.format(model_file))
-                model.save(model_file)
+                torch.save({'state_dict': model.state_dict()}, model_file)
 
         for idx, dataset in enumerate(args.test_datasets):
             prefix = dataset.split('_')[0]
@@ -429,7 +429,7 @@ def main():
                 logger.info('[new test scores saved.]')
 
         model_file = os.path.join(output_dir, 'model_{}.pt'.format(epoch))
-        model.save(model_file)
+        torch.save({'state_dict': model.state_dict()}, model_file)
     if args.tensorboard:
         tensorboard.close()
 

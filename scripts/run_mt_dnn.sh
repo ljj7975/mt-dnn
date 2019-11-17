@@ -17,13 +17,13 @@ MODEL_ROOT="checkpoints"
 echo $3
 if [[ $3 == "bert_base" ]]
 then
-    BERT_PATH="mt_dnn_models/bert_model_base_uncased.pt"
+    BERT_PATH="~/scratch/mt_dnn_models/bert_model_base_uncased.pt"
 elif [[ $3 == "bert_large" ]]
-    BERT_PATH="mt_dnn_models/bert_model_large_uncased.pt"
+    BERT_PATH="~/scratch/mt_dnn_models/bert_model_large_uncased.pt"
 elif [[ $3 == "roberta_base" ]]
-    BERT_PATH="mt_dnn_models/roberta.base/model.pt"
+    BERT_PATH="~/scratch/mt_dnn_models/roberta.base/model.pt"
 elif [[ $3 == "roberta_large" ]]
-    BERT_PATH="mt_dnn_models/roberta.large/model.pt"
+    BERT_PATH="~/scratch/mt_dnn_models/roberta.large/model.pt"
 else
     echo "INCORRECT MODEL NAME"
     exit 1

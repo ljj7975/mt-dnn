@@ -7,4 +7,4 @@
 #SBATCH --output=mt_dnn_base.out
 #SBATCH --mem=64G
 
-bash scripts/run_mt_dnn.sh roberta_base 16 0,1,2,3 base
+bash scripts/run_mt_dnn.sh roberta_base 16 0,1,2,3
