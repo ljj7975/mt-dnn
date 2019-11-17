@@ -3,9 +3,7 @@
 # This script is used to download resources for MT-DNN experiments
 ############################################################## 
 
-BASE_DIR=$1
-
-DATA_DIR=$(BASE_DIR)/data
+DATA_DIR=${SCRATCH_DIR}/data
 if [ ! -d ${DATA_DIR}  ]; then
   echo "Create a folder $DATA_DIR"
   mkdir ${DATA_DIR}
