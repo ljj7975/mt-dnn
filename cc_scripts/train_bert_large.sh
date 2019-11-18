@@ -1,6 +1,5 @@
 #!/bin/bash
-#SBATCH --account=ctb-ontario
-#SBATCH --partition=c-ontario
+#SBATCH --account=def-jimmylin
 #SBATCH --time=4-00:00:00
 #SBATCH --gres=gpu:v100:4
 #SBATCH --cpus-per-task=4
