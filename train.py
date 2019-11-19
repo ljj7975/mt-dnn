@@ -142,8 +142,9 @@ logger = create_logger(__name__, to_disk=True, log_file=log_path)
 logger.info(args.answer_opt)
 
 task_defs = TaskDefs(args.task_def)
-encoder_type = task_defs.encoderType
-args.encoder_type = encoder_type
+
+# encoder_type = task_defs.encoderType
+# args.encoder_type = encoder_type
 
 
 def dump(path, data):
@@ -212,7 +213,7 @@ def main():
                               maxlen=args.max_seq_len,
                               data_type=data_type,
                               task_type=task_type,
-                              encoder_type=encoder_type)
+                              encoder_type=args.encoder_type)
         train_data_list.append(train_data)
 
     opt['answer_opt'] = decoder_opts
@@ -246,7 +247,7 @@ def main():
                                 maxlen=args.max_seq_len,
                                 data_type=data_type,
                                 task_type=task_type,
-                                encoder_type=encoder_type)
+                                encoder_type=args.encoder_type)
         dev_data_list.append(dev_data)
 
         test_path = os.path.join(data_dir, '{}_test.json'.format(dataset))
@@ -259,7 +260,7 @@ def main():
                                  maxlen=args.max_seq_len,
                                  data_type=data_type,
                                  task_type=task_type,
-                                 encoder_type=encoder_type)
+                                 encoder_type=args.encoder_type)
         test_data_list.append(test_data)
 
     logger.info('#' * 20)
@@ -283,7 +284,7 @@ def main():
     bert_model_path = args.init_checkpoint
     state_dict = None
 
-    if encoder_type == EncoderModelType.BERT:
+    if args.encoder_type == EncoderModelType.BERT:
         if os.path.exists(bert_model_path):
             state_dict = torch.load(bert_model_path)
             config = state_dict['config']
@@ -298,7 +299,7 @@ def main():
             config = BertConfig(vocab_size_or_config_json_file=30522).to_dict()
             config['multi_gpu_on'] = opt["multi_gpu_on"]
             opt.update(config)
-    elif encoder_type == EncoderModelType.ROBERTA:
+    elif args.encoder_type == EncoderModelType.ROBERTA:
         bert_model_path = '{}/model.pt'.format(bert_model_path)
         if os.path.exists(bert_model_path):
             new_state_dict = {}
@@ -383,7 +384,7 @@ def main():
             if args.save_per_updates_on and ((model.local_updates) % (args.save_per_updates * args.grad_accumulation_step) == 0):
                 model_file = os.path.join(output_dir, 'model_{}_{}.pt'.format(epoch, model.updates))
                 logger.info('Saving mt-dnn model to {}'.format(model_file))
-                torch.save({'state_dict': model.state_dict()}, model_file)
+                torch.save({'state_dict': model.network.state_dict()}, model_file)
 
         for idx, dataset in enumerate(args.test_datasets):
             prefix = dataset.split('_')[0]
@@ -429,7 +430,7 @@ def main():
                 logger.info('[new test scores saved.]')
 
         model_file = os.path.join(output_dir, 'model_{}.pt'.format(epoch))
-        torch.save({'state_dict': model.state_dict()}, model_file)
+        torch.save({'state_dict': model.network.state_dict()}, model_file)
     if args.tensorboard:
         tensorboard.close()
 
