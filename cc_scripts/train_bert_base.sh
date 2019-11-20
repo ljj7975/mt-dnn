@@ -8,4 +8,4 @@
 
 conda activate brandon_mt-dnn
 
-bash scripts/run_mt_dnn.sh bert_base 16 0,1,2,3
+bash scripts/run_mt_dnn.sh bert_base 8 0,1,2,3
