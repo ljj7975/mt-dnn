@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --account=def-jimmylin
-#SBATCH --time=2-00:00:00
+#SBATCH --time=6-00:00:00
 #SBATCH --gres=gpu:v100:4
 #SBATCH --cpus-per-task=4
 #SBATCH --output=mt_dnn_roberta_base.out
