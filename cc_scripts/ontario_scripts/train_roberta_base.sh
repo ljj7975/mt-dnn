@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --account=ctb-ontario
 #SBATCH --partition=c-ontario
-#SBATCH --time=6-00:00:00
+#SBATCH --time=4-10:00:00
 #SBATCH --gres=gpu:v100:4
 #SBATCH --cpus-per-task=4
 #SBATCH --output=mt_dnn_roberta_base.out
